@@ -26,4 +26,4 @@ app.use(register)
 app.use(login)
 app.use(liuyan)
 
-app.listen(443);
+app.listen(80);
