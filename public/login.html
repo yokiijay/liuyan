@@ -98,7 +98,7 @@
     })
 
     function checkusername(username){
-      var re=/^[a-z0-9]{4,16}$/;  //4-16位小写、数字的用户名
+      var re=/^[a-zA-Z0-9]{4,16}$/;  //4-16位小写、数字的用户名
       return re.test(username);
     }
     function checkpassword(password){
