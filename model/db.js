@@ -1,12 +1,13 @@
 var MongoClient=require('mongodb').MongoClient;
 var assert=require('assert');
+var address = require('address');
 
 // 链接数据库客户端
 function _connect(callback){
     const url='mongodb://localhost:27017/usersInfo';
     MongoClient.connect(url,function (err,client){
         assert.equal(null,err);
-        console.log('connected successful to DB Server');
+        console.log(address.ip()+'connected to DB server!');
         const db=client.db('usersInfo');
         callback(err,db);
         client.close();
