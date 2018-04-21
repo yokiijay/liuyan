@@ -19,7 +19,7 @@ app.use(session({
 }))
 
 app.get('/',function (req,res){
-    console.log(address.ip());
+    console.log(address.ip(),req.ip);
     res.redirect('./login.html');
 })
 
