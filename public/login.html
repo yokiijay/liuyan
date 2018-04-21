@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="theme.css" type="text/css"> </head>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://cdn.bootcss.com/timer.jquery/0.7.1/timer.jquery.min.js"></script>
+  <style>
+  .alert{
+    display: none;
+  }
+  .alert>h4{
+    display: none;
+  }
+  </style>
+
+<body>
+  <div class="py-5" style="background-image: url(&quot;https://pingendo.github.io/templates/sections/assets/form_red.jpg&quot;);">
+    <div class="container">
+      <div class="row">
+        <div class="align-self-center col-md-6 text-white">
+          <h1 class="text-center text-md-left display-3">加入 我们！</h1>
+          <p class="lead text-center text-md-left">Why waiting if you can do it online?</p>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body p-5">
+              <h3 class="pb-3">欢迎登陆 csustart.com</h3>
+              <form id="login-form" action="" method="POST">
+                <div class="form-group">
+                  <label>用户名</label>
+                  <input type="text" class="form-control" name="username" placeholder="请输入用户名"> </div>
+                <div class="form-group" draggable="true">
+                  <label>密码</label>
+                  <input type="password" class="form-control" name="password" placeholder="请输入密码"> </div>
+                <button class="btn btn-primary btn-sm w-25 mt-2" type="button" id="login">登陆</button>
+                <button class="btn btn-outline-primary btn-sm w-25 mt-2" id="register" type="button">注册</button>
+              </form>
+            </div>
+            <div class="alert alert-danger w-100 pb-0" role="alert">
+              <button type="button" class="close" aria-label="Close">×</button>
+              <h4 class="alert-heading">Well done!</h4>
+              <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $('#register').click(function (){
+      var formObject=$('#login-form').serializeObject();
+      var username=formObject.username; // 获取username
+      var password=formObject.password; // 获取password
+      var data=$('#login-form').serialize();
+      // 用户名或密码非法 用户已存在
+      if(checkusername(username)&&checkpassword(password)){
+        $.post('/register',data,function (result){
+          if(result.registerStatus==-1){
+            $('.alert>p').html('注册失败,该用户已存在');
+            showalert();
+          }else if(result.registerStatus==1){
+            $('.alert>p').html('恭喜,注册成功！');
+            showalert();
+            $('.alert').removeClass('alert-danger').addClass('alert-success');
+          }
+        })
+      }else{
+        $('.alert>p').html('注册失败,用户名或密码非法，仅支持4-16位小写英文、数字的用户名和6-21位英文数字组成的密码');
+        showalert();
+      }
+    })
+    $('#login').click(function (){
+      var formObject=$('#login-form').serializeObject();
+      var username=formObject.username;
+      var password=formObject.password;
+      var data=$('#login-form').serialize();
+
+      $.post('/login',data,function (result){
+        if(result.loginStatus==-1){
+          $('.alert>p').html('登陆失败,用户名尚未注册');
+          showalert();
+        }else if(result.loginStatus==-2){
+          $('.alert>p').html('登陆失败,密码错误');
+          showalert();
+        }else{
+          $('.alert>p').html('恭喜，登陆成功');
+          showalert();
+          $('.alert').removeClass('alert-danger').addClass('alert-success');
+          $(location).attr('href', '/liuyan');
+        }
+      })
+    })
+
+    function checkusername(username){
+      var re=/^[a-z0-9]{4,16}$/;  //4-16位小写、数字的用户名
+      return re.test(username);
+    }
+    function checkpassword(password){
+      var re=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{4,16}$/;  //6-21位由英文和数字组成的密码
+      return re.test(password);
+    }
+    $.fn.serializeObject = function() {
+      var o = {};
+      var a = this.serializeArray();
+      $.each(a, function() {
+      if (o[this.name] !== undefined) {
+      if (!o[this.name].push) {
+      o[this.name] = [o[this.name]];
+      }
+      o[this.name].push(this.value || '');
+      } else {
+      o[this.name] = this.value || '';
+      }
+      });
+      return o;
+    };
+    function showalert(){
+      $('.alert').removeClass('alert-success').addClass('alert-danger');
+      $('.alert').show();
+      $('.alert>button').click(function (){$('.alert').css('display','none')});
+    }
+  
+  </script>
+</body>
+
+</html>
