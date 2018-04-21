@@ -25,4 +25,4 @@ app.use(register)
 app.use(login)
 app.use(liuyan)
 
-app.listen(3000);
+app.listen(80);
