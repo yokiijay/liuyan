@@ -17,7 +17,7 @@ app.use(session({
     cookie: {maxAge:10000}
 }))
 
-app.get('/',function (req,res){
+app.get(function (req,res){
     console.log(req.ip);
     res.redirect('./login.html');
 })
