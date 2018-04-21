@@ -2,7 +2,6 @@ var express=require('express');
 var app=express();
 var session=require('express-session');
 var fs=require('fs');
-var address = require('address');
 
 //router
 var register=require('./router/register');
@@ -19,7 +18,7 @@ app.use(session({
 }))
 
 app.get('/',function (req,res){
-    console.log(address.ip(),req.ip);
+    console.log(req.ip);
     res.redirect('./login.html');
 })
 
