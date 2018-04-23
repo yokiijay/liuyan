@@ -15,7 +15,7 @@ app.use(session({
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: true,
-    cookie: {maxAge:180000}
+    cookie: {maxAge:600000}
 }))
 
 app.get('/',function (req,res){
@@ -35,7 +35,9 @@ io.on('connection',function (socket){   //  io.on 表示所有room  与所有roo
         io.emit('online',[oluss,socket.name]);
     })
     socket.on('disconnect',function (){
-        oluss.splice(oluss.indexOf(socket.name),1);
+        if(oluss.indexOf(socket.name)!=-1){
+            oluss.splice(oluss.indexOf(socket.name),1);
+        }
         socket.broadcast.emit('offline',[oluss,socket.name])
     })
     socket.on('send',function (data){

@@ -18,6 +18,6 @@ router.get('/chatroom',function (req,res){
         })
     }else{
         res.clearCookie('username')
-        res.send('测试阶段，我们网站只保留3分钟登录状态，之后需要重新登录哦~！~');
+        res.send('测试阶段，我们网站只保留10分钟登录状态，之后需要重新登录哦~！~');
     }
 })
