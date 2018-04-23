@@ -6,7 +6,6 @@ function _connect(callback){
     const url='mongodb://localhost:27017/usersInfo';
     MongoClient.connect(url,function (err,client){
         assert.equal(null,err);
-        console.log('connected to DB server!');
         const db=client.db('usersInfo');
         callback(err,db);
         client.close();
@@ -38,6 +37,28 @@ exports.find=function (collectionName,json,args,callback){
         var cursor=db.collection(collectionName).find(json);
         if(args!=null){
             cursor=cursor.skip(args.skip).limit(args.limit);
+        }
+        cursor.each(function (err,doc){
+            if(err){
+                callback(err,null);
+                console.log(err);
+            }
+            if(doc){
+                result.push(doc)
+            }else{
+                callback(null,result);
+            }
+        })
+    })
+}
+
+exports.sort=function (collectionName,json,type,callback){
+    _connect(function (err,db){
+        assert.equal(null,err);
+        var result=[];
+        var cursor=db.collection(collectionName).find(json);
+        if(type!=null){
+            cursor=cursor.sort(type)
         }
         cursor.each(function (err,doc){
             if(err){
