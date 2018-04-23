@@ -50,6 +50,6 @@ app.use(register)
 app.use(login)
 app.use(chatroom)
 
-http.listen(3000,'192.168.2.246');
+http.listen(80);
 
 exports.oluss=oluss;
