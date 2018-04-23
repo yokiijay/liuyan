@@ -75,6 +75,7 @@
     })
 
     $('#send').click(function (){
+      $('#content').val('');
       var info={username:myusername,content:$('#content').val()};
       socket.emit('send',info)
 
