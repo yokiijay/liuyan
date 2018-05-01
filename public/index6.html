@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/parallax/3.1.0/parallax.min.js"></script>
+    <title>用background-image</title>
+    <style>
+        html,body{
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .section-1{
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        #scene{
+            width: 1000px;
+            height: 1000px;
+            position: absolute;
+            margin: auto;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        #scene img{
+            position: absolute !important;
+            display: block;
+            margin: auto;
+            left: 0 !important;
+            right: 0 !important;
+            top: 0 !important;
+            bottom: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="section-1">
+        <div id="scene">
+            <img data-depth="3.0" src="https://s1.ax2x.com/2018/05/01/STPVn.png" alt="STPVn.png" border="0">
+            <img data-depth="1.8" src="https://s1.ax2x.com/2018/05/01/STc8Q.png" alt="STc8Q.png" border="0">
+            <img data-depth="1.4" src="https://s1.ax2x.com/2018/05/01/STayE.png" alt="STayE.png" border="0">
+            <img data-depth="1.0" src="https://s1.ax2x.com/2018/05/01/STEua.png" alt="STEua.png" border="0">
+            <img data-depth="0.8" src="https://s1.ax2x.com/2018/05/01/STCF2.png" alt="STCF2.png" border="0">
+            <img data-depth="0.62" src="https://s1.ax2x.com/2018/05/01/STLtz.png" alt="STLtz.png" border="0">
+            <img data-depth="0.4" src="https://s1.ax2x.com/2018/05/01/STewS.png" alt="STewS.png" border="0">
+            <img data-depth="0.2" src="https://s1.ax2x.com/2018/05/01/STKGh.png" alt="STKGh.png" border="0">
+            <img data-depth="0.1" src="https://s1.ax2x.com/2018/05/01/ST1LH.png" alt="ST1LH.png" border="0">
+        </div>
+    </div>
+    <script>
+        var scene=$('#scene').get(0);
+        var parallax=new Parallax(scene,{
+            relativeInput:true,
+            hoverOnly:true,
+            inputElement:document.querySelector('img')
+        })
+        parallax.friction(0.1,0.1);
+        parallax.scalar(30,30);
+        parallax.invert(false,false);
+    </script>
+</body>
+</html>
