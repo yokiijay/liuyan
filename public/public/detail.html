@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>一个会赚钱的app-redesign</title>
+  <link rel="stylesheet" href="css/bootstrap4.1.min.css">
+  <script src="https://cdn.bootcss.com/scrollReveal.js/4.0.0-beta.31/scrollreveal.min.js"></script>
+  <script src="https://cdn.bootcss.com/smoothscroll/1.4.6/SmoothScroll.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery.sticky/1.0.4/jquery.sticky.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
+  <style>
+    body{
+      background: #F2F3F7;
+    }
+    
+    @font-face{
+      font-family:myriad condensed;
+      src:url('/font/MyriadPro-Cond.otf');
+    }
+    @font-face{
+      font-family:myriad boldCondensed;
+      src:url('/font/MyriadPro-BoldCond.otf');
+    }
+    /* Bob */
+    @-webkit-keyframes hvr-bob {
+      0% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+      }
+      50% {
+        -webkit-transform: translateY(-4px);
+        transform: translateY(-4px);
+      }
+      100% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+      }
+    }
+    @keyframes hvr-bob {
+      0% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+      }
+      50% {
+        -webkit-transform: translateY(-4px);
+        transform: translateY(-4px);
+      }
+      100% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+      }
+    }
+    @-webkit-keyframes hvr-bob-float {
+      100% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+      }
+    }
+    @keyframes hvr-bob-float {
+      100% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+      }
+    }
+    .hvr-bob {
+      display: inline-block;
+      vertical-align: middle;
+      -webkit-transform: perspective(1px) translateZ(0);
+      transform: perspective(1px) translateZ(0);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    }
+    .hvr-bob:hover, .hvr-bob:focus, .hvr-bob:active {
+        -webkit-animation-name: hvr-bob-float, hvr-bob;
+        animation-name: hvr-bob-float, hvr-bob;
+        -webkit-animation-duration: .3s, 1.5s;
+        animation-duration: .3s, 1.5s;
+        -webkit-animation-delay: 0s, .3s;
+        animation-delay: 0s, .3s;
+        -webkit-animation-timing-function: ease-out, ease-in-out;
+        animation-timing-function: ease-out, ease-in-out;
+        -webkit-animation-iteration-count: 1, infinite;
+        animation-iteration-count: 1, infinite;
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+        -webkit-animation-direction: normal, alternate;
+        animation-direction: normal, alternate;
+      }
+
+    /* Float */
+    .hvr-float {
+      display: inline-block;
+      vertical-align: middle;
+      -webkit-transform: perspective(1px) translateZ(0);
+      transform: perspective(1px) translateZ(0);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+      -webkit-transition-duration: 0.3s;
+      transition-duration: 0.3s;
+      -webkit-transition-property: transform;
+      transition-property: transform;
+      -webkit-transition-timing-function: ease-out;
+      transition-timing-function: ease-out;
+    }
+    .hvr-float:hover, .hvr-float:focus, .hvr-float:active {
+      -webkit-transform: translateY(-4px);
+      transform: translateY(-4px);
+    }
+
+/*    header*/
+    svg{
+        display: block
+    }
+    .align-middle{
+        display: flex;
+        align-items:center;
+        justify-content:flex-end;
+    }
+    header{
+        position: absolute;
+        z-index: 999;
+        background: #ffffff;
+        box-shadow: rgba(39, 67, 255, 0.08) 0px 1px 4px;
+    }
+    .navbar{
+        padding: 8px 100px;
+    }
+    @media (max-width: 1440px){
+        .navbar{
+            padding: 8px 20px;
+        }
+    }
+    header li{
+        margin-right: 30px;
+    }
+    #btn-mes path{
+        fill: #DEE0EA;
+    }
+    #btn-mes:hover path{
+        transition: fill .2s ease;
+        fill: #2743FF;
+    }
+    #btn-add path{
+        transform-origin: center;
+    }
+    #btn-ham path{
+        transform-origin: center;
+    }
+    .nav{
+      position: relative;
+    }
+    #nav{
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        width: 210px;
+        height: 300px;
+        z-index: 999;
+        display: none;
+        flex-flow: column;
+        align-items: center;
+        justify-content:center;
+        background: #ffffff;
+        border-radius: 20px 0 20px 20px;
+        transform-origin: right top;
+    }
+    #nav+.shadow{
+        position: absolute;
+        top: 100px;
+        right: 20px;
+        z-index: -1;
+        width: 210px;
+        height: 300px;
+        display: none;
+        opacity: 0.1;
+        background: #1E1538;
+        border-radius: 30px;
+        filter: blur(10px);
+        transform-origin: right top;
+    }
+    #nav a{
+        display: block;
+        font-size: 16px;
+        color: #1024a5;
+        line-height: 52px;
+        letter-spacing: 7px;
+        text-indent: 7px;
+        text-align: center;
+    }
+    #nav a:hover{
+        text-decoration: none;
+    }
+    #nav .active{
+        color: #ffffff;
+    }
+    #nav .active:after{
+        content: '';
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 130px;
+        height: 30px;
+        z-index: -1;
+        border: none;
+        background: #2743FF;
+        border-radius: 4px;
+    }
+    #nav button{
+        position: absolute;
+        width: 130px;
+        height: 30px;
+        z-index: -1;
+        border: none;
+        background: #2743FF;
+        border-radius: 4px;
+    }
+    
+    
+/*    upload*/
+    .upload{
+      position: fixed;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(30, 21, 56, 0.6);
+      z-index: 999;
+      display: none;
+    }
+    .upload-form{
+      position: absolute;
+      width: 686px;
+      height: 700px;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      padding: 30px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: rgba(19, 10, 42, 0.4) 0 2px 10px;
+      overflow: hidden;
+    }
+    .upload-form>div{
+      margin-bottom: 22px;
+    }
+    .upload-form .btn-fabu:hover{
+      color: #ffffff !important;
+      background: #2743FF;
+      cursor: pointer;
+    }
+    
+/*    detail*/
+    .container{
+      max-width: 1440px;
+    }
+    .detail>div{
+      margin-top: 50px;
+    }
+    .detail>div>div:first-child,.detail-info{
+      box-shadow: rgba(30, 21, 56, 0.1) 0px 20px 30px;
+    }
+    .detail>div>div:first-child img{
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    .detail-info{
+      padding: 30px 12px;
+      background: #2743FF;
+      border-top-right-radius:20px;
+      border-bottom-right-radius:20px;
+    }
+    
+    .info-good:hover{
+      color: #2743FF;
+    }
+    .info-good:hover .icon-good{
+      fill:#2743FF;
+    }
+  </style>
+</head>
+<body>  
+  <header class="navbar navbar-light p-x-0">
+      <a class="navbar-brand" href="#">
+          <img id="img" src="img/brand-logo.png" alt="images">
+      </a>
+      <ul class="nav align-middle">
+          <li data-type="hoverScale">
+            <a class="" href="#">
+              <svg id="btn-mes" width="36px" height="30px" viewBox="0 0 36 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g transform="translate(-15.000000, -72.000000)">
+                          <g transform="translate(15.000000, 72.000000)">
+                              <path d="M12.5460192,-4.67696131e-16 L23.180574,5.17920154e-16 C27.6381677,-3.00926524e-16 29.2545989,0.464128056 30.8842285,1.33566352 C32.5138581,2.20719898 33.792801,3.48614185 34.6643365,5.11577148 C35.5358719,6.74540111 36,8.3618323 36,12.819426 L36,30 L12.5460192,30 C8.41651367,30 6.74540111,29.5358719 5.11577148,28.6643365 C3.48614185,27.792801 2.20719898,26.5138581 1.33566352,24.8842285 C0.464128056,23.2545989 1.93921147e-16,21.5834863 -3.11797421e-16,17.4539808 L3.11797421e-16,12.5460192 C-1.93921147e-16,8.41651367 0.464128056,6.74540111 1.33566352,5.11577148 C2.20719898,3.48614185 3.48614185,2.20719898 5.11577148,1.33566352 C6.74540111,0.464128056 8.41651367,2.9088172e-16 12.5460192,-4.67696131e-16 Z"></path>
+                              <g transform="translate(8.000000, 13.000000)">
+                                  <circle fill="#FFFFFF" cx="2" cy="2" r="2"></circle>
+                                  <circle fill="#FFFFFF" cx="10" cy="2" r="2"></circle>
+                                  <circle fill="#FFFFFF" cx="18" cy="2" r="2"></circle>
+                              </g>
+                          </g>
+                      </g>
+                  </g>
+              </svg>
+            </a>
+          </li>
+          <li data-type="hoverScale">
+            <a class="" href="#">
+                <img width="42px" src="img/avatar-84.png" alt="">
+            </a>
+          </li>
+          <li data-type="hoverScale" class="m-r-lg">
+            <a class="" href="#">
+              <svg id="btn-add" width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g transform="translate(-15.000000, -216.000000)">
+                          <g transform="translate(15.000000, 216.000000)">
+                              <circle fill="#2743FF" cx="18" cy="18" r="18"></circle>
+                              <path d="M18,13 L18,23" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"></path>
+                              <path d="M23,18 L13,18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"></path>
+                          </g>
+                      </g>
+                  </g>
+              </svg>
+            </a>
+          </li>
+          <li data-type="hoverScale" style="margin-left:20px">
+            <a class="" href="#">
+              <svg id="btn-ham" width="22px" height="18px" viewBox="0 0 22 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+                      <g transform="translate(-14.000000, -288.000000)" stroke="#0D1B73" stroke-width="2">
+                          <g transform="translate(15.000000, 288.000000)">
+                              <path d="M0,1 L20,1" ></path>
+                              <path d="M0,9 L20,9" ></path>
+                              <path d="M0,17 L20,17" ></path>
+                          </g>
+                      </g>
+                  </g>
+              </svg>
+            </a>
+          </li>
+          <div id="nav">
+              <div data-type="hoverScale"><a class="css11d64043931cbfd" href="/index.html">发现</a></div>
+              <div data-type="hoverScale"><a class="css11d64043931cbfd" href="/zuopin.html">作品</a></div>
+              <div data-type=""><a class="css11d64043931cbfd active" href="">赛事</a></div>
+              <div data-type="hoverScale"><a class="css11d64043931cbfd" href="">价值</a></div>
+              <div data-type="hoverScale"><a class="css11d64043931cbfd" href="">我的</a></div>
+          </div>
+          <div class="shadow"></div>
+      </ul>
+  </header>
+  <article class="detail container">
+    <div class="row">
+      <div class="col-10 px-0">
+        <img src="img/preset/detail-1.jpg" alt="">
+      </div>
+      <div class="col-2 px-0">
+        <ul class="detail-info list-unstyled">
+          <li>
+            <h5 style="font-size: 24px;color: white;font-weight: 400;letter-spacing: 1px;">一款会赚钱的APP-Redesign</h5>
+          </li>
+          <li>
+            <span style="color: #DEE0EA;font-size: 14px;font-weight: 100;">2018-11-18</span>
+          </li>
+          <hr style="border-top: 1px solid white">
+          <li>
+            <p style="color: white; font-weight: 100; letter-spacing: 1px; font-size: 14px;">
+              这款APP是我前家公司的产品，我也是它的忠实用户。
+              去年改版过一次，但是我觉得效果还是差强人意，所以抱着学习的目的对其进行改版练习。
+              前期进行了APP的功能梳理和竞品分析，对部分功能模块进行了推翻重造（比如说金粉世家模块）。
+              视觉层面上，保留了品牌色，不会让老用户有脱离感。同时加入了品牌形象设计，更生动，增强了与用户的互动感，同时可以延展到后期品牌运营推广。
+            </p>
+          </li>
+          <li style="margin-bottom: 20px;">
+            <a class="info-avatar hvr-float" href=""><img src="img/preset/avatar-2.png" width="30px" alt=""></a>
+            <span style="color: #DEE0EA; line-height: 30px;vertical-align: middle; padding-left: 6px;">谭瑷髯</span>
+          </li>
+          <li class="text-center">
+            <a href="" class="info-good btn btn-outline-light hvr-float" style="width: 160px;height: 40px;border-radius: 10px;border-width: 2px;">
+              <svg style="display: inline-block" width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g class="icon-good" id="Home_detail" transform="translate(-1587.000000, -628.000000)" fill="#F6FF6F" fill-rule="nonzero">
+                          <g id="Group-2" transform="translate(1518.000000, 110.000000)">
+                              <g id="Group" transform="translate(42.000000, 508.000000)">
+                                  <path d="M27.6067744,14.8695652 L29.4408447,14.8695652 C29.7745706,14.8695652 30.047619,15.1342277 30.047619,15.457704 L30.047619,25.4118612 C30.047619,25.7353375 29.7745706,26 29.4408447,26 L27.6067744,26 C27.2730485,26 27,25.7353375 27,25.4118612 L27,15.457704 C27,15.1342277 27.2730485,14.8695652 27.6067744,14.8695652 Z M42.3542027,15.1771132 L38.6108426,15.1771132 C38.1782506,15.1771132 37.8679804,14.7822073 37.9922743,14.3898153 L38.4139633,13.0586597 C38.4236907,13.0279715 38.4310857,12.9965292 38.4355038,12.9647636 C38.7821425,10.4767052 36.6398317,9.65582808 36.1428458,10.1264219 C35.7618864,10.48721 35.437414,10.8879519 35.3809461,11.2087501 C35.2000326,12.2367051 34.5893334,13.5888522 33.9182602,14.8424882 C33.8083013,15.0478961 33.5855583,15.1771132 33.3423747,15.1771132 L32.2172258,15.1771132 C31.8620354,15.1771132 31.5714286,15.4523191 31.5714286,15.7886859 L31.5714286,25.3884273 C31.5714286,25.7247941 31.8620354,26 32.2172258,26 L42.3542027,26 C42.7093931,26 43,25.7247941 43,25.3884273 L43,15.7886859 C43,15.4523191 42.7093931,15.1771132 42.3542027,15.1771132 Z" id="Shape"></path>
+                              </g>
+                          </g>
+                      </g>
+                  </g>
+              </svg>
+              不错，加油
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+  <article class="upload">
+    <form class="upload-form" action="" method="post" enctype="multipart/form-data">
+      <div>
+        <span style="margin-right: 10px;"><img src="img/upload.png" alt=""></span>
+        <span style="line-height: 20px;vertical-align: middle;font-size: 18px;color: #BCBECC">上传作品</span>
+      </div>
+      <div>
+        <label for="biaoti" style="color: #565865">标题</label><br>
+        <input type="text" name="biaoti" id="biaoti" style="width: 626px;height: 50px;border: none;background: rgba(222, 224, 234, 0.35);border-radius: 4px;" />
+      </div>
+      <div>
+        <label for="miaoshu" style="color: #565865">描述</label><br>
+        <textarea name="miaoshu" id="miaoshu" style="width: 626px;height: 180px;resize: none;border: none;background: rgba(222, 224, 234, 0.35);border-radius: 4px;"></textarea>
+      </div>
+      <div>
+        <label for="tupian" style="color: #565865">图片</label><br>
+        <input id="tupian" name="tupian" type="file" accept="image/*"  multiple>
+      </div>
+      <div class="text-center" style="margin-top: 120px;margin-bottom: 0px;">
+        <button type="submit" class="btn-fabu" data-type="hoverScale" style="border: #2743FF 2px solid;border-radius: 14px;width: 160px;height: 40px;color: #2743FF;font-size: 20px;">发布</button>
+      </div>
+    </form>
+  </article>
+  
+  <script>
+    /////////////////////////////////////////////////////////
+    //data-img 动态添加背景图
+    $('[data-img]').each(function (){
+      $(this).css('background-image','url('+$(this).attr('data-img')+')')
+    })
+
+    var header=$('header');
+    var mes=header.find('li:first');
+    var mesPath=header.find('path');
+    var mesCircles=header.find('circle');
+
+    //动画
+    //全局属性动画   data-type="hoverScale"
+    $('[data-type=hoverScale]').hover(function (){
+        if(this.anim)this.anim.pause();
+        this.anim=anime({
+            targets:this,
+            elasticity:800,
+            scaleX:{
+                value:1.2,
+                duration:1500
+            },
+            scaleY:1.2
+        })
+    },function (){
+        if(this.anim)this.anim.pause();
+        this.anim=anime({
+            targets:this,
+            scaleX:{
+                value:1,
+                duration:500
+            },
+            scaleY:1
+        })
+    })
+
+    //btn-add   rotate
+    $('#btn-add').hover(function (){
+        if(this.anim)this.anim.pause();
+        this.anim=anime({
+            targets:'#btn-add path',
+            rotate:'.5turn',
+            duration:function(el,i){
+                return (i+1)*0.5*1000
+            }
+        })
+    },function (){
+        if(this.anim)this.anim.pause();
+        this.anim=anime({
+            targets:'#btn-add path',
+            rotate:'0turn',
+            duration:function(el,i){
+                return (i+1)*0.5*1000
+            }
+        })
+    })
+    //btn-mes   .active() .inactive()
+    function BtnMes(){
+        this.active=function (){
+  //                $('#btn-mes path').removeClass('toBlue-f')
+  //                $('#btn-mes path').addClass('toBlue-f')
+            if(this.anim)this.anim.pause();
+            this.anim=anime({
+                targets:'#btn-mes circle',
+                fill:['#ffffff','#F235C4','#ffffff'],
+                duration:900,
+                delay:function(el,i){return i*300},
+                direction:'alternate',
+                loop:true
+            })
+        }
+        this.inacive=function (){
+            anime.remove('#btn-mes circle');
+            $('#btn-mes circle').attr('fill','#ffffff')
+        }
+    }
+    //btn-ham
+    $('#btn-ham').click(function (){
+        if(!this.onOff){
+            if(this.anim)this.anim.pause();
+            this.anim=anime.timeline();
+            this.anim
+            .add({
+                targets:$('#btn-ham path').get(2),
+                scaleX:0,
+                rotate:'.5turn',
+                duration:200,
+                easing:'easeInExpo'
+            })
+            .add({
+                targets:$('#btn-ham path').get(0),
+                d:'M3,1 L17.1421356,15.1421356',
+                rotate:'.25turn',
+                duration:400
+            })
+            .add({
+                targets:$('#btn-ham path').get(1),
+                d:'M2.92893219,15.0710678 L17.0710678,0.928932188',
+                duration:500,
+                rotate:'.25turn',
+                offset:'-=300'
+            })
+            this.onOff=!this.onOff;
+        }else{
+            if(this.anim)this.anim.pause();
+            this.anim=anime.timeline();
+            this.anim
+            .add({
+                targets:$('#btn-ham path').get(0),
+                d:'M0,1 L20,1',
+                rotate:'0turn',
+                duration:400
+            })
+            .add({
+                targets:$('#btn-ham path').get(1),
+                d:'M0,9 L20,9',
+                duration:500,
+                rotate:'0turn',
+                offset:'-=300'
+            })
+            .add({
+                targets:$('#btn-ham path').get(2),
+                scaleX:1,
+                rotate:'0turn',
+                duration:400,
+                easing:'easeOutExpo',
+                offset:'-=600'
+            })
+            this.onOff=!this.onOff;
+        }
+    })
+
+    //#nav 动画
+    $('#btn-ham').click(function (){
+        if(this.onOff){
+            $('#nav').css('display','flex');
+            $('#nav+.shadow').css('display','block');
+            if(this.anim2)this.anim2.pause();
+            this.anim2=anime.timeline();
+            this.anim2
+            .add({
+                targets:'#nav',
+                elasticity:100,
+                scaleX:{value:[0,1],duration:400},
+                scaleY:{value:[0,1],duration:600}
+            })
+            .add({
+                targets:'#nav+.shadow',
+                scale:[0,1],
+                opacity:[0,0.04],
+                easing:'easeInQuad',
+                offset:-800
+            })
+            .add({
+                targets:'#nav>*',
+                opacity:[0,1],
+                translateY:[-20,0],
+                duration:800,
+                delay:function(el,i){
+                    return i*50;
+                },
+                offset:100
+            })
+        }else{
+            if(this.anim2)this.anim2.pause();
+            this.anim2=anime.timeline();
+            this.anim2
+            .add({
+                targets:'#nav',
+                easing:'easeOutExpo',
+                scaleX:{value:0,duration:400},
+                scaleY:{value:0,duration:400},
+            })
+            .add({
+                targets:'#nav+.shadow',
+                scale:0,
+                opacity:0,
+                easing:'easeOutQuad',
+                offset:-400
+            })
+        }
+    }) //点击切换nav
+    
+    ////////////////////////////////////////////////
+    // 上传作品
+    $('#btn-add').click(function (ev){
+      ev.stopPropagation();
+      $('.upload').css('display','block');
+      $('.upload-form').css('transform','scale(0)');
+      if(window.anim)window.anim.pause();
+        window.anim=anime({
+        targets:'.upload',
+        easing:'linear',
+        duration:'200',
+        opacity:[.5,1],
+        complete:function (){
+          window.anim=anime({
+            targets:'.upload-form',
+            duration:'600',
+            easing:'linear',
+            opacity:[0,1],
+            translateY:[100,0]
+          })
+        }
+      })
+    })
+    $('.upload-form').click(function (ev){
+      ev.stopPropagation();
+    })
+    $(document).click(function (){
+      if(window.anim)window.anim.pause();
+        window.anim=anime({
+        targets:'.upload-form',
+        duration:'300',
+        easing:'linear',
+        opacity:0,
+        translateY:100,
+        complete:function(){
+          window.anim=anime({
+            targets:'.upload',
+            easing:'linear',
+            duration:'300',
+            opacity:0,
+            complete:function (){
+              $('.upload').css('display','none');
+            }
+          })
+        }
+      })
+    })
+    
+  </script>
+</body>
+</html>

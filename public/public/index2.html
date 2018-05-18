@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>The Sphere E Project</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href='http://cdn.webfont.youziku.com/webfonts/nomal/117757/47017/5aedd8d3f629d8079c5c7ce5.css' rel='stylesheet' type='text/css' />
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+    <script src="https://cdn.bootcss.com/parallax/3.1.0/parallax.min.js"></script>
+    <style>
+/*        全局css*/
+        html{
+            overflow: hidden;
+          height: 100%;
+        }
+        body{
+            background: url(img/bg-noise-100.png);
+          overflow: hidden;
+          height: 100%;
+        }
+        svg{
+            display: block;
+        }
+        a{
+            cursor:url(img/cursor.ico),auto;
+        }
+        .toBlue,.toBlue-f{
+            fill: #2743FF !important; 
+        }
+        .toLight{
+            fill: #DEE0EA !important;
+        }
+/*        垂直居中*/
+        .align-middle{
+            display: flex;
+            align-items:center;
+            justify-content:flex-end;
+        }
+        
+/*        头部*/
+        header{
+            margin: auto 100px;
+        }
+        @media (max-width: 1440px){
+            header{
+                margin: auto 20px;
+            }
+        }
+        
+/*        sphere*/
+        .sphere{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: -1;
+        }
+        .sphere-item,
+        .sphere-item img{
+            position: absolute;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: block;
+        }
+        .sphere-item:first-child{
+            position: absolute !important;
+        }
+      
+      .p1{
+        height: 80%;
+        width: 100%;
+        transform: scale(.9);
+      }
+      
+/*     p2 按键tips*/
+      .p2{
+        position: fixed;
+/*        width: 100%;*/
+        top: 30px;
+/*        left: 0;*/
+        right: 90px;
+      }
+      
+/*     p3 数字呈现*/
+      .p3{
+        position: absolute;
+        overflow: hidden;
+        font-size: 5em;
+        font-weight: 800;
+        line-height: 1.4em;
+        top: 0;
+        word-break: break-all;
+        z-index: -1;
+        color: rgba(0, 0, 0, 0.03);
+      }
+    </style>
+</head>
+<body>
+    <header class="navbar navbar-light bg-light p-x-0">
+      <a class="navbar-brand" href="#">
+          <img style="display: inline-block;" id="logoSpin" src="img/brand-logo-left.png" alt="images">
+<!--          <img style="display: inline-block;" src="img/brand-logo-right.png" alt="">-->
+          <img style="display: inline-block;margin-left: 10px" src="img/brand-logo-vslab.png" alt="">
+      </a>
+      <audio src="audio/psycho.mp3"></audio>
+    </header>
+    <article class="p1">
+            <div class="sphere">
+                <div class="sphere-item" data-depth="2.4" style="filter:blur(10px)">
+                    <img class="img-responsive" src="img/sphere/0.png" alt="">
+                </div>
+                <div class="sphere-item" data-depth="1.8">
+                    <img class="img-responsive" src="img/sphere/1.png" alt="">
+                </div>
+                <div class="sphere-item" data-depth="1.4">
+                    <img class="img-responsive" src="img/sphere/2.png" alt="">
+                </div>
+                <div class="sphere-item" data-depth="1.0">
+                    <img class="img-responsive" src="img/sphere/3.png" alt="">
+                </div>
+                <div class="sphere-item" data-depth="0.8">
+                    <img class="img-responsive" src="img/sphere/4.png" alt="">
+                </div>
+                <div class="sphere-item" data-depth="0.6">
+                    <img class="img-responsive" src="img/sphere/5.png" alt="">
+                </div>
+                <div class="sphere-item" data-depth="0.4">
+                    <img class="img-responsive" src="img/sphere/6.png" alt="">
+                </div>
+                <div class="sphere-item" data-depth="0.2">
+                    <img class="img-responsive" src="img/sphere/7.png" alt="">
+                </div>
+                <div class="sphere-item" data-depth="0.1">
+                    <img class="img-responsive" src="img/sphere/8.png" alt="">
+                </div>
+            </div>
+    </article>
+    <article class="p2">
+      <div class="p2-tips" style="font-size: 10px">
+        <span><kbd>↩ Enter</kbd> 播放/暂停</span>
+        &nbsp;&nbsp;
+<!--        <br>-->
+        <span><kbd>→ 方向键</kbd> 下一首</span>
+        &nbsp;&nbsp;
+<!--        <br>-->
+        <span><kbd>← 方向键</kbd> 上一首</span>
+      </div>
+    </article>
+    <article class="p3">
+    
+    </article>
+    <script>
+      
+        //  header
+        var header=$('header');
+        var mes=header.find('li:first');
+        var mesPath=header.find('path');
+        var mesCircles=header.find('circle');
+        
+        //动画
+        //全局属性动画   data-type="hoverScale"
+        $('[data-type=hoverScale]').hover(function (){
+            if(this.anim)this.anim.pause();
+            this.anim=anime({
+                targets:this,
+                elasticity:800,
+                scaleX:{
+                    value:1.2,
+                    duration:1500
+                },
+                scaleY:1.2
+            })
+        },function (){
+            if(this.anim)this.anim.pause();
+            this.anim=anime({
+                targets:this,
+                scaleX:{
+                    value:1,
+                    duration:500
+                },
+                scaleY:1
+            })
+        })
+      // logoSpin
+      anime({
+        targets:'#logoSpin',
+        easing:'linear',
+        loop:true,
+        rotate:'1turn',
+        duration:4000
+      })
+        
+        ////////////////////////////////////////////////////////
+        
+        //  sphere
+        
+        //  parallax
+        var sphere=$('.sphere').get(0);
+        var spherePlx= new Parallax(sphere,{
+            relativeInput:true,
+            hoverOnly:true,
+            inputElement:document.querySelector('.sphere-item img')
+        })
+        spherePlx.friction(0.1,0.1);
+        spherePlx.scalar(30,30);
+        spherePlx.invert(false,false);
+        
+        //  audio
+      var audio=$('audio').get(0);
+      var audioSrc=['audio/psycho.mp3','audio/heartBeat.mp3','audio/the%20hum.mp3','audio/melody.mp3','audio/shivers.mp3','audio/revolution.mp3','audio/handclap.mp3','audio/FKJ,Tom%20Bailey%20-%20Drops.mp3','audio/Ellie%20Goulding%20-%20Lights.mp3','audio/%D0%97%D0%B0%D1%8F.mp3','audio/color-x.mp3'];
+      var audioIndex=0;
+      
+        function sum(arr) {
+          var len = arr.length;
+          if(len == 0){
+              return 0;
+          } else if (len == 1){
+              return arr[0];
+          } else {
+              return arr[0] + sum(arr.slice(1));
+          }
+        }
+        function average(arr){
+            return sum(arr)/arr.length
+        }
+      
+      audio.oncanplay=function (){
+        window.onkeydown=function(ev){
+          if(ev.keyCode==13&&!audio.onOff){
+            letsRock();
+            audio.onOff=!audio.onOff;
+          }
+        }
+        $(window).on('touchstart',function(e){
+          if(!audio.onOff){
+            letsRock();
+            audio.onOff=!audio.onOff;
+          }
+        })
+      }
+      
+      
+      $(window).keydown(function (ev){
+        if(audio.paused&&ev.keyCode==13){
+          audio.play()
+        }else if(ev.keyCode==13){
+          audio.pause();
+        }
+        switch(ev.keyCode){
+          case 37 : prevAudio();break;
+          case 39 : nextAudio();break;
+        }
+      })
+      audio.onended=function (){
+        nextAudio();
+      }
+      
+      function nextAudio(){
+        audioIndex++;
+        if(audioIndex<=audioSrc.length-1){
+          audio.src=audioSrc[audioIndex];
+          audio.play();
+        }else if(audioIndex>audioSrc.length-1){
+          audioIndex=0;
+          audio.src=audioSrc[audioIndex];
+          audio.play();
+        }
+      }
+      function prevAudio(){
+        audioIndex--;
+        if(audioIndex>=0){
+          audio.src=audioSrc[audioIndex];
+          audio.play();
+        }else if(audioIndex<0){
+          audioIndex=audioSrc.length-1;
+          audio.src=audioSrc[audioIndex];
+          audio.play();
+        }
+      }
+      function letsRock(){
+        audio.play();
+        var ac=new (window.AudioContext||window.webkitAudioContext)();
+        var source=ac.createMediaElementSource(audio);
+        var analyser=ac.createAnalyser();
+        analyser.fftSize=256;
+        source.connect(analyser);
+        analyser.connect(ac.destination);
+        var frequencyData=new Uint8Array(analyser.frequencyBinCount);
+        function renderFrame(){
+          analyser.getByteFrequencyData(frequencyData);
+          var arr=frequencyData;
+          var html='';
+          for(var i=0;i<128;i++){
+            html+=arr[i]+'&nbsp;:&nbsp;';
+            $('.p3').html(html);
+          }
+//          $('.p3').html(arr[0]);
+//          console.log(arr);
+          $('.p1').css('transform','scale('+average(arr)/100+')');
+//                        console.log(frequencyData);
+//                        console.log(average(arr));
+          $('.p1 img:eq(8)').css('transform','scale('+average(arr.slice(0,4))/330+')');
+          $('.p1 img:eq(7)').css('transform','scale('+average(arr.slice(4,7))/280+')');
+          $('.p1 img:eq(6)').css('transform','scale('+average(arr.slice(5,8))/260+')');
+          $('.p1 img:eq(5)').css('transform','scale('+average(arr.slice(6,9))/280+')');
+          $('.p1 img:eq(4)').css('transform','scale('+average(arr.slice(8,11))/280+')');
+          $('.p1 img:eq(3)').css('transform','scale('+average(arr.slice(10,13))/280+')');
+          $('.p1 img:eq(2)').css('transform','scale('+average(arr.slice(12,15))/280+')');
+          $('.p1 img:eq(1)').css('transform','scale('+average(arr.slice(15,16))/280+')');
+          $('.p1 img:eq(0)').css('transform','scale('+average(arr.slice(6,16))/280+')');
+          requestAnimationFrame(renderFrame)
+        }
+        renderFrame();
+      }
+      
+//        function load(url){
+//            var xhr= new XMLHttpRequest();
+//            xhr.open('GET',url);
+//            xhr.responseType="arraybuffer";
+//            xhr.onload=function (){
+//                var ac=new (window.AudioContext||window.webkitAudioContext)();
+//                ac.decodeAudioData(xhr.response,function (buffer){
+//                    var source=ac.createBufferSource();
+//                    var analyser=ac.createAnalyser();
+//                    analyser.fftSize=256;
+//                    source.buffer=buffer;
+//                    source.connect(analyser);
+//                    analyser.connect(ac.destination);
+//                    var frequencyData=new Uint8Array(analyser.frequencyBinCount);
+//                    function renderFrame(){
+//                        analyser.getByteFrequencyData(frequencyData);
+//                        var arr=frequencyData;
+//                        $('.p1').css('transform','scale('+average(arr)/100+')');
+////                        console.log(frequencyData);
+////                        console.log(average(arr.slice(0,4)));
+//                        $('.p1 img:eq(8)').css('transform','scale('+average(arr.slice(0,4))/170+')');
+//                        $('.p1 img:eq(7)').css('transform','scale('+average(arr.slice(4,7))/120+')');
+//                        $('.p1 img:eq(6)').css('transform','scale('+average(arr.slice(5,8))/100+')');
+//                        $('.p1 img:eq(5)').css('transform','scale('+average(arr.slice(6,9))/120+')');
+//                        $('.p1 img:eq(4)').css('transform','scale('+average(arr.slice(8,11))/120+')');
+//                        $('.p1 img:eq(3)').css('transform','scale('+average(arr.slice(10,13))/120+')');
+//                        $('.p1 img:eq(2)').css('transform','scale('+average(arr.slice(12,15))/120+')');
+//                        $('.p1 img:eq(1)').css('transform','scale('+average(arr.slice(15,16))/120+')');
+//                        $('.p1 img:eq(0)').css('transform','scale('+average(arr.slice(6,16))/120+')');
+//                        requestAnimationFrame(renderFrame)
+//                    }
+//                    source.start(0);
+//                    renderFrame();
+//                },function (err){
+//                    console.log(err);
+//                })
+//            }
+//            xhr.send();
+//        }
+//        $(function (){
+//            load('audio/Virtual%20Riot%20-%20Energy%20Drink.mp3')
+//        })
+//        $(window).click(function (){
+//            load('audio/Virtual Riot - Energy Drink.mp3')
+//        })
+</script>
+</body>
+</html>

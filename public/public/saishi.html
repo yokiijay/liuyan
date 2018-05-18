@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>赛事</title>
+  <link rel="stylesheet" href="css/bootstrap4.1.min.css">
+  <script src="https://cdn.bootcss.com/scrollReveal.js/4.0.0-beta.31/scrollreveal.min.js"></script>
+  <script src="https://cdn.bootcss.com/smoothscroll/1.4.6/SmoothScroll.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery.sticky/1.0.4/jquery.sticky.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js"></script>
+  <style>
+    body{
+      background: #FAFEFF;
+    }
+    
+    @font-face{
+      font-family:myriad condensed;
+      src:url('/font/MyriadPro-Cond.otf');
+    }
+    @font-face{
+      font-family:myriad boldCondensed;
+      src:url('/font/MyriadPro-BoldCond.otf');
+    }
+    /* Bob */
+    @-webkit-keyframes hvr-bob {
+      0% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+      }
+      50% {
+        -webkit-transform: translateY(-4px);
+        transform: translateY(-4px);
+      }
+      100% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+      }
+    }
+    @keyframes hvr-bob {
+      0% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+      }
+      50% {
+        -webkit-transform: translateY(-4px);
+        transform: translateY(-4px);
+      }
+      100% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+      }
+    }
+    @-webkit-keyframes hvr-bob-float {
+      100% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+      }
+    }
+    @keyframes hvr-bob-float {
+      100% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+      }
+    }
+    .hvr-bob {
+      display: inline-block;
+      vertical-align: middle;
+      -webkit-transform: perspective(1px) translateZ(0);
+      transform: perspective(1px) translateZ(0);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    }
+    .hvr-bob:hover, .hvr-bob:focus, .hvr-bob:active {
+        -webkit-animation-name: hvr-bob-float, hvr-bob;
+        animation-name: hvr-bob-float, hvr-bob;
+        -webkit-animation-duration: .3s, 1.5s;
+        animation-duration: .3s, 1.5s;
+        -webkit-animation-delay: 0s, .3s;
+        animation-delay: 0s, .3s;
+        -webkit-animation-timing-function: ease-out, ease-in-out;
+        animation-timing-function: ease-out, ease-in-out;
+        -webkit-animation-iteration-count: 1, infinite;
+        animation-iteration-count: 1, infinite;
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+        -webkit-animation-direction: normal, alternate;
+        animation-direction: normal, alternate;
+      }
+
+    /* Float */
+    .hvr-float {
+      display: inline-block;
+      vertical-align: middle;
+      -webkit-transform: perspective(1px) translateZ(0);
+      transform: perspective(1px) translateZ(0);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+      -webkit-transition-duration: 0.3s;
+      transition-duration: 0.3s;
+      -webkit-transition-property: transform;
+      transition-property: transform;
+      -webkit-transition-timing-function: ease-out;
+      transition-timing-function: ease-out;
+    }
+    .hvr-float:hover, .hvr-float:focus, .hvr-float:active {
+      -webkit-transform: translateY(-4px);
+      transform: translateY(-4px);
+    }
+
+/*    header*/
+    svg{
+        display: block
+    }
+    .align-middle{
+        display: flex;
+        align-items:center;
+        justify-content:flex-end;
+    }
+    header{
+        position: absolute;
+        z-index: 999;
+        background: #ffffff;
+        box-shadow: rgba(39, 67, 255, 0.08) 0px 1px 4px;
+    }
+    .navbar{
+        padding: 8px 100px;
+    }
+    @media (max-width: 1440px){
+        .navbar{
+            padding: 8px 20px;
+        }
+    }
+    header li{
+        margin-right: 30px;
+    }
+    #btn-mes path{
+        fill: #DEE0EA;
+    }
+    #btn-mes:hover path{
+        transition: fill .2s ease;
+        fill: #2743FF;
+    }
+    #btn-add path{
+        transform-origin: center;
+    }
+    #btn-ham path{
+        transform-origin: center;
+    }
+    .nav{
+      position: relative;
+    }
+    #nav{
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        width: 210px;
+        height: 300px;
+        z-index: 999;
+        display: none;
+        flex-flow: column;
+        align-items: center;
+        justify-content:center;
+        background: #ffffff;
+        border-radius: 20px 0 20px 20px;
+        transform-origin: right top;
+    }
+    #nav+.shadow{
+        position: absolute;
+        top: 100px;
+        right: 20px;
+        z-index: -1;
+        width: 210px;
+        height: 300px;
+        display: none;
+        opacity: 0.1;
+        background: #1E1538;
+        border-radius: 30px;
+        filter: blur(10px);
+        transform-origin: right top;
+    }
+    #nav a{
+        display: block;
+        font-size: 16px;
+        color: #1024a5;
+        line-height: 52px;
+        letter-spacing: 7px;
+        text-indent: 7px;
+        text-align: center;
+    }
+    #nav a:hover{
+        text-decoration: none;
+    }
+    #nav .active{
+        color: #ffffff;
+    }
+    #nav .active:after{
+        content: '';
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 130px;
+        height: 30px;
+        z-index: -1;
+        border: none;
+        background: #2743FF;
+        border-radius: 4px;
+    }
+    #nav button{
+        position: absolute;
+        width: 130px;
+        height: 30px;
+        z-index: -1;
+        border: none;
+        background: #2743FF;
+        border-radius: 4px;
+    }
+    
+    
+/*      比赛预知*/
+    .comp{
+      margin-top: 70px;
+    }
+    .comp h3{
+      font-size: 24px;
+      color: #2743FF;
+      letter-spacing: 10px;
+    }
+    .shadow-bisaiyuzhi{
+      display: block;
+      margin: 0 auto;
+    }
+    .comp .nav{
+      margin-bottom: 40px;
+    }
+    .comp .nav-item{
+      margin: 0 10px;
+    }
+    .comp .nav a{
+      color: rgba(13, 27, 115, 0.6);
+    }
+    .comp .nav .active{
+      color: rgba(13, 27, 115, 1);
+    }
+    
+    .comp-list{
+      
+    }
+    .comp-card{
+      padding-bottom: 20px;
+      margin-bottom: 40px;
+      border-radius: 20px;
+      background: #ffffff;
+      overflow: hidden;
+      box-shadow: rgba(13, 27, 115, 0.1) 0 10px 20px;
+      transition: box-shadow .4s;
+    }
+    .comp-card:hover{
+      box-shadow: rgba(13, 27, 115, 0.1) 0 2px 10px;
+    }
+    .comp-card .card-img{
+      display: block;
+      height: 320px;
+      margin-bottom: 14px;
+      background-size: cover;
+      background-position: center;
+    }
+    .comp-card h4 a{
+      padding: 0 20px;
+      color: #0D1B73;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+    .comp-card h4 a:hover{
+      text-decoration: none;
+    }
+    .comp-card h6{
+      padding: 0 20px;
+      color: #2743FF;
+      font-size: 14px;
+    }
+    .comp-card p{
+      height: 60px;
+      padding: 0 20px;
+      color: rgba(30, 21, 56);
+      font-size: 14px;
+      overflow: hidden;
+    }
+    
+    .pagination{
+      margin-top: 60px;
+    }
+    .pagination .page-item{
+      margin: 0 5px;
+    }
+    .page-item.active a{
+      background-color: #2743FF;
+    }
+    .pagination .page-link{
+      padding: 0;
+      width: 40px;
+      height: 40px;
+      vertical-align: middle;
+      line-height: 40px;
+      text-align: center;
+      border: none;
+      background: #DEE0EA;
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: 100;
+      color: #ffffff;
+    }
+    
+/*    获奖公示*/
+    .prize{
+      margin-top: 100px;
+      background: #2743FF;
+      padding-top: 100px;
+      padding-bottom: 100px;
+    }
+    
+/*    upload*/
+    .upload{
+      position: fixed;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(30, 21, 56, 0.6);
+      z-index: 999;
+      display: none;
+    }
+    .upload-form{
+      position: absolute;
+      width: 686px;
+      height: 700px;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      padding: 30px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: rgba(19, 10, 42, 0.4) 0 2px 10px;
+      overflow: hidden;
+    }
+    .upload-form>div{
+      margin-bottom: 22px;
+    }
+    .upload-form .btn-fabu:hover{
+      color: #ffffff !important;
+      background: #2743FF;
+      cursor: pointer;
+    }
+    
+  </style>
+</head>
+<body>  
+  <header class="navbar navbar-light p-x-0">
+      <a class="navbar-brand" href="#">
+          <img id="img" src="img/brand-logo.png" alt="images">
+      </a>
+      <ul class="nav align-middle">
+          <li data-type="hoverScale">
+            <a class="" href="#">
+              <svg id="btn-mes" width="36px" height="30px" viewBox="0 0 36 30" versoin="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g transform="translate(-15.000000, -72.000000)">
+                          <g transform="translate(15.000000, 72.000000)">
+                              <path d="M12.5460192,-4.67696131e-16 L23.180574,5.17920154e-16 C27.6381677,-3.00926524e-16 29.2545989,0.464128056 30.8842285,1.33566352 C32.5138581,2.20719898 33.792801,3.48614185 34.6643365,5.11577148 C35.5358719,6.74540111 36,8.3618323 36,12.819426 L36,30 L12.5460192,30 C8.41651367,30 6.74540111,29.5358719 5.11577148,28.6643365 C3.48614185,27.792801 2.20719898,26.5138581 1.33566352,24.8842285 C0.464128056,23.2545989 1.93921147e-16,21.5834863 -3.11797421e-16,17.4539808 L3.11797421e-16,12.5460192 C-1.93921147e-16,8.41651367 0.464128056,6.74540111 1.33566352,5.11577148 C2.20719898,3.48614185 3.48614185,2.20719898 5.11577148,1.33566352 C6.74540111,0.464128056 8.41651367,2.9088172e-16 12.5460192,-4.67696131e-16 Z"></path>
+                              <g transform="translate(8.000000, 13.000000)">
+                                  <circle fill="#FFFFFF" cx="2" cy="2" r="2"></circle>
+                                  <circle fill="#FFFFFF" cx="10" cy="2" r="2"></circle>
+                                  <circle fill="#FFFFFF" cx="18" cy="2" r="2"></circle>
+                              </g>
+                          </g>
+                      </g>
+                  </g>
+              </svg>
+            </a>
+          </li>
+          <li data-type="hoverScale">
+            <a class="" href="#">
+                <img width="42px" src="img/avatar-84.png" alt="">
+            </a>
+          </li>
+          <li data-type="hoverScale" class="m-r-lg">
+            <a class="" href="#">
+              <svg id="btn-add" width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g transform="translate(-15.000000, -216.000000)">
+                          <g transform="translate(15.000000, 216.000000)">
+                              <circle fill="#2743FF" cx="18" cy="18" r="18"></circle>
+                              <path d="M18,13 L18,23" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"></path>
+                              <path d="M23,18 L13,18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="square"></path>
+                          </g>
+                      </g>
+                  </g>
+              </svg>
+            </a>
+          </li>
+          <li data-type="hoverScale" style="margin-left:20px">
+            <a class="" href="#">
+              <svg id="btn-ham" width="22px" height="18px" viewBox="0 0 22 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+                      <g transform="translate(-14.000000, -288.000000)" stroke="#0D1B73" stroke-width="2">
+                          <g transform="translate(15.000000, 288.000000)">
+                              <path d="M0,1 L20,1" ></path>
+                              <path d="M0,9 L20,9" ></path>
+                              <path d="M0,17 L20,17" ></path>
+                          </g>
+                      </g>
+                  </g>
+              </svg>
+            </a>
+          </li>
+          <div id="nav">
+              <div data-type="hoverScale"><a class="css11d64043931cbfd" href="/index.html">发现</a></div>
+              <div data-type="hoverScale"><a class="css11d64043931cbfd" href="/zuopin.html">作品</a></div>
+              <div data-type=""><a class="css11d64043931cbfd active" href="">赛事</a></div>
+              <div data-type="hoverScale"><a class="css11d64043931cbfd" href="">价值</a></div>
+              <div data-type="hoverScale"><a class="css11d64043931cbfd" href="">我的</a></div>
+          </div>
+          <div class="shadow"></div>
+      </ul>
+  </header>
+  <article class="comp container">
+    <h3 class="text-center">比/赛/预/知</h3>
+    <img class="shadow-bisaiyuzhi" src="img/shadow-zuopin.png" alt="">
+    <ul class="nav row justify-content-center">
+      <li class="nav-item"><a class="nav-link active hvr-float" href="">全部</a></li>
+      <li class="nav-item"><a class="nav-link hvr-float" href="">服装设计</a></li>
+      <li class="nav-item"><a class="nav-link hvr-float" href="">视觉传达</a></li>
+      <li class="nav-item"><a class="nav-link hvr-float" href="">环境设计</a></li>
+      <li class="nav-item"><a class="nav-link hvr-float" href="">产品设计</a></li>
+      <li class="nav-item"><a class="nav-link hvr-float" href="">数字媒体</a></li>
+    </ul>
+    <ul class="comp-list row list-unstyled">
+      <li class="col-md-6">
+        <div class="comp-card">
+          <a class="card-img hvr-float" href="" data-img="img/preset/comp-1.jpg"></a>
+          <h4 class="hvr-float"><a href="">WPS主题皮肤设计内邀赛</a></h4>
+          <h6>2018-01-10 - 2018-02-15</h6>
+          <p>设计师，你想让自己的作品出现在WPS新品发布会现场，全场千人共同见证吗？你想让自己的作品成为WPS Nest默认主题皮肤，千万级用户使用吗？你想进行一次落地项目实训，获得UI中国&amp;WPS官方认证吗？本次WPS主题皮肤设计实训内邀赛，除了评选出WPS Next 默认主题皮肤外，更是一场落地项目实训，所有完成项目设计的设计师，都将获得由UI中国和WPS颁发的WPS主题皮肤认证设计师证书以及丰厚奖金！</p>
+        </div>
+      </li>
+      <li class="col-md-6">
+        <div class="comp-card">
+          <a class="card-img hvr-float" href="" data-img="img/preset/comp-2.jpg"></a>
+          <h4 class="hvr-float"><a href="">WPS主题皮肤设计内邀赛</a></h4>
+          <h6>2018-01-10 - 2018-02-15</h6>
+          <p>设计师，你想让自己的作品出现在WPS新品发布会现场，全场千人共同见证吗？你想让自己的作品成为WPS Nest默认主题皮肤，千万级用户使用吗？你想进行一次落地项目实训，获得UI中国&amp;WPS官方认证吗？本次WPS主题皮肤设计实训内邀赛，除了评选出WPS Next 默认主题皮肤外，更是一场落地项目实训，所有完成项目设计的设计师，都将获得由UI中国和WPS颁发的WPS主题皮肤认证设计师证书以及丰厚奖金！</p>
+        </div>
+      </li>
+      <li class="col-md-6">
+        <div class="comp-card">
+          <a class="card-img hvr-float" href="" data-img="img/preset/comp-3.jpg"></a>
+          <h4 class="hvr-float"><a href="">WPS主题皮肤设计内邀赛</a></h4>
+          <h6>2018-01-10 - 2018-02-15</h6>
+          <p>设计师，你想让自己的作品出现在WPS新品发布会现场，全场千人共同见证吗？你想让自己的作品成为WPS Nest默认主题皮肤，千万级用户使用吗？你想进行一次落地项目实训，获得UI中国&amp;WPS官方认证吗？本次WPS主题皮肤设计实训内邀赛，除了评选出WPS Next 默认主题皮肤外，更是一场落地项目实训，所有完成项目设计的设计师，都将获得由UI中国和WPS颁发的WPS主题皮肤认证设计师证书以及丰厚奖金！</p>
+        </div>
+      </li>
+      <li class="col-md-6">
+        <div class="comp-card">
+          <a class="card-img hvr-float" href="" data-img="img/preset/comp-4.jpg"></a>
+          <h4 class="hvr-float"><a href="">WPS主题皮肤设计内邀赛</a></h4>
+          <h6>2018-01-10 - 2018-02-15</h6>
+          <p>设计师，你想让自己的作品出现在WPS新品发布会现场，全场千人共同见证吗？你想让自己的作品成为WPS Nest默认主题皮肤，千万级用户使用吗？你想进行一次落地项目实训，获得UI中国&amp;WPS官方认证吗？本次WPS主题皮肤设计实训内邀赛，除了评选出WPS Next 默认主题皮肤外，更是一场落地项目实训，所有完成项目设计的设计师，都将获得由UI中国和WPS颁发的WPS主题皮肤认证设计师证书以及丰厚奖金！</p>
+        </div>
+      </li>
+      <li class="col-md-6">
+        <div class="comp-card">
+          <a class="card-img hvr-float" href="" data-img="img/preset/comp-5.jpg"></a>
+          <h4 class="hvr-float"><a href="">WPS主题皮肤设计内邀赛</a></h4>
+          <h6>2018-01-10 - 2018-02-15</h6>
+          <p>设计师，你想让自己的作品出现在WPS新品发布会现场，全场千人共同见证吗？你想让自己的作品成为WPS Nest默认主题皮肤，千万级用户使用吗？你想进行一次落地项目实训，获得UI中国&amp;WPS官方认证吗？本次WPS主题皮肤设计实训内邀赛，除了评选出WPS Next 默认主题皮肤外，更是一场落地项目实训，所有完成项目设计的设计师，都将获得由UI中国和WPS颁发的WPS主题皮肤认证设计师证书以及丰厚奖金！</p>
+        </div>
+      </li>
+      <li class="col-md-6">
+        <div class="comp-card">
+          <a class="card-img hvr-float" href="" data-img="img/preset/comp-6.jpg"></a>
+          <h4 class="hvr-float"><a href="">WPS主题皮肤设计内邀赛</a></h4>
+          <h6>2018-01-10 - 2018-02-15</h6>
+          <p>设计师，你想让自己的作品出现在WPS新品发布会现场，全场千人共同见证吗？你想让自己的作品成为WPS Nest默认主题皮肤，千万级用户使用吗？你想进行一次落地项目实训，获得UI中国&amp;WPS官方认证吗？本次WPS主题皮肤设计实训内邀赛，除了评选出WPS Next 默认主题皮肤外，更是一场落地项目实训，所有完成项目设计的设计师，都将获得由UI中国和WPS颁发的WPS主题皮肤认证设计师证书以及丰厚奖金！</p>
+        </div>
+      </li>
+      <li class="col-md-6">
+        <div class="comp-card">
+          <a class="card-img hvr-float" href="" data-img="img/preset/comp-7.jpg"></a>
+          <h4 class="hvr-float"><a href="">WPS主题皮肤设计内邀赛</a></h4>
+          <h6>2018-01-10 - 2018-02-15</h6>
+          <p>设计师，你想让自己的作品出现在WPS新品发布会现场，全场千人共同见证吗？你想让自己的作品成为WPS Nest默认主题皮肤，千万级用户使用吗？你想进行一次落地项目实训，获得UI中国&amp;WPS官方认证吗？本次WPS主题皮肤设计实训内邀赛，除了评选出WPS Next 默认主题皮肤外，更是一场落地项目实训，所有完成项目设计的设计师，都将获得由UI中国和WPS颁发的WPS主题皮肤认证设计师证书以及丰厚奖金！</p>
+        </div>
+      </li>
+      <li class="col-md-6">
+        <div class="comp-card">
+          <a class="card-img hvr-float" href="" data-img="img/preset/comp-8.jpg"></a>
+          <h4 class="hvr-float"><a href="">WPS主题皮肤设计内邀赛</a></h4>
+          <h6>2018-01-10 - 2018-02-15</h6>
+          <p>设计师，你想让自己的作品出现在WPS新品发布会现场，全场千人共同见证吗？你想让自己的作品成为WPS Nest默认主题皮肤，千万级用户使用吗？你想进行一次落地项目实训，获得UI中国&amp;WPS官方认证吗？本次WPS主题皮肤设计实训内邀赛，除了评选出WPS Next 默认主题皮肤外，更是一场落地项目实训，所有完成项目设计的设计师，都将获得由UI中国和WPS颁发的WPS主题皮肤认证设计师证书以及丰厚奖金！</p>
+        </div>
+      </li>
+    </ul>
+    <ul class="pagination justify-content-center">
+      <li class="page-item hvr-float">
+        <a class="page-link" style="border-radius: 50%" href="#" aria-label="Previous">
+          <span aria-hidden="true">&lt;</span>
+        </a>
+      </li>
+      <li class="page-item hvr-float active"><a class="page-link" href="#">1</a></li>
+      <li class="page-item hvr-float"><a class="page-link" href="#">2</a></li>
+      <li class="page-item hvr-float"><a class="page-link" href="#">3</a></li>
+      <li class="page-item hvr-float">
+        <a class="page-link" style="border-radius: 50%" href="#" aria-label="Next">
+          <span aria-hidden="true">&gt;</span>
+        </a>
+      </li>
+    </ul>
+  </article>
+  <article class="prize">
+    <div class="prize-table container">
+      <table class="table table-hover table-striped table-borderless">
+        <caption class="text-black-50">部分获奖名单</caption>
+        <thead class="">
+          <tr>
+            <th>#</th>
+            <th>荣誉</th>
+            <th>作品</th>
+            <th>参赛者</th>
+            <th>指导老师</th>
+            <th>专业</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+            <td>@mdo</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+            <td>@fat</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+            <td>@twitter</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+  <article class="upload">
+    <form class="upload-form" action="" method="post" enctype="multipart/form-data">
+      <div>
+        <span style="margin-right: 10px;"><img src="img/upload.png" alt=""></span>
+        <span style="line-height: 20px;vertical-align: middle;font-size: 18px;color: #BCBECC">上传作品</span>
+      </div>
+      <div>
+        <label for="biaoti" style="color: #565865">标题</label><br>
+        <input type="text" name="biaoti" id="biaoti" style="width: 626px;height: 50px;border: none;background: rgba(222, 224, 234, 0.35);border-radius: 4px;" />
+      </div>
+      <div>
+        <label for="miaoshu" style="color: #565865">描述</label><br>
+        <textarea name="miaoshu" id="miaoshu" style="width: 626px;height: 180px;resize: none;border: none;background: rgba(222, 224, 234, 0.35);border-radius: 4px;"></textarea>
+      </div>
+      <div>
+        <label for="tupian" style="color: #565865">图片</label><br>
+        <input id="tupian" name="tupian" type="file" accept="image/*"  multiple>
+      </div>
+      <div class="text-center" style="margin-top: 120px;margin-bottom: 0px;">
+        <button type="submit" class="btn-fabu" data-type="hoverScale" style="border: #2743FF 2px solid;border-radius: 14px;width: 160px;height: 40px;color: #2743FF;font-size: 20px;">发布</button>
+      </div>
+    </form>
+  </article>
+  <script>
+    /////////////////////////////////////////////////////////
+    //data-img 动态添加背景图
+    $('[data-img]').each(function (){
+      $(this).css('background-image','url('+$(this).attr('data-img')+')')
+    })
+
+    var header=$('header');
+    var mes=header.find('li:first');
+    var mesPath=header.find('path');
+    var mesCircles=header.find('circle');
+
+    //动画
+    //全局属性动画   data-type="hoverScale"
+    $('[data-type=hoverScale]').hover(function (){
+        if(this.anim)this.anim.pause();
+        this.anim=anime({
+            targets:this,
+            elasticity:800,
+            scaleX:{
+                value:1.2,
+                duration:1500
+            },
+            scaleY:1.2
+        })
+    },function (){
+        if(this.anim)this.anim.pause();
+        this.anim=anime({
+            targets:this,
+            scaleX:{
+                value:1,
+                duration:500
+            },
+            scaleY:1
+        })
+    })
+
+    //btn-add   rotate
+    $('#btn-add').hover(function (){
+        if(this.anim)this.anim.pause();
+        this.anim=anime({
+            targets:'#btn-add path',
+            rotate:'.5turn',
+            duration:function(el,i){
+                return (i+1)*0.5*1000
+            }
+        })
+    },function (){
+        if(this.anim)this.anim.pause();
+        this.anim=anime({
+            targets:'#btn-add path',
+            rotate:'0turn',
+            duration:function(el,i){
+                return (i+1)*0.5*1000
+            }
+        })
+    })
+    //btn-mes   .active() .inactive()
+    function BtnMes(){
+        this.active=function (){
+  //                $('#btn-mes path').removeClass('toBlue-f')
+  //                $('#btn-mes path').addClass('toBlue-f')
+            if(this.anim)this.anim.pause();
+            this.anim=anime({
+                targets:'#btn-mes circle',
+                fill:['#ffffff','#F235C4','#ffffff'],
+                duration:900,
+                delay:function(el,i){return i*300},
+                direction:'alternate',
+                loop:true
+            })
+        }
+        this.inacive=function (){
+            anime.remove('#btn-mes circle');
+            $('#btn-mes circle').attr('fill','#ffffff')
+        }
+    }
+    //btn-ham
+    $('#btn-ham').click(function (){
+        if(!this.onOff){
+            if(this.anim)this.anim.pause();
+            this.anim=anime.timeline();
+            this.anim
+            .add({
+                targets:$('#btn-ham path').get(2),
+                scaleX:0,
+                rotate:'.5turn',
+                duration:200,
+                easing:'easeInExpo'
+            })
+            .add({
+                targets:$('#btn-ham path').get(0),
+                d:'M3,1 L17.1421356,15.1421356',
+                rotate:'.25turn',
+                duration:400
+            })
+            .add({
+                targets:$('#btn-ham path').get(1),
+                d:'M2.92893219,15.0710678 L17.0710678,0.928932188',
+                duration:500,
+                rotate:'.25turn',
+                offset:'-=300'
+            })
+            this.onOff=!this.onOff;
+        }else{
+            if(this.anim)this.anim.pause();
+            this.anim=anime.timeline();
+            this.anim
+            .add({
+                targets:$('#btn-ham path').get(0),
+                d:'M0,1 L20,1',
+                rotate:'0turn',
+                duration:400
+            })
+            .add({
+                targets:$('#btn-ham path').get(1),
+                d:'M0,9 L20,9',
+                duration:500,
+                rotate:'0turn',
+                offset:'-=300'
+            })
+            .add({
+                targets:$('#btn-ham path').get(2),
+                scaleX:1,
+                rotate:'0turn',
+                duration:400,
+                easing:'easeOutExpo',
+                offset:'-=600'
+            })
+            this.onOff=!this.onOff;
+        }
+    })
+
+    //#nav 动画
+    $('#btn-ham').click(function (){
+        if(this.onOff){
+            $('#nav').css('display','flex');
+            $('#nav+.shadow').css('display','block');
+            if(this.anim2)this.anim2.pause();
+            this.anim2=anime.timeline();
+            this.anim2
+            .add({
+                targets:'#nav',
+                elasticity:100,
+                scaleX:{value:[0,1],duration:400},
+                scaleY:{value:[0,1],duration:600}
+            })
+            .add({
+                targets:'#nav+.shadow',
+                scale:[0,1],
+                opacity:[0,0.04],
+                easing:'easeInQuad',
+                offset:-800
+            })
+            .add({
+                targets:'#nav>*',
+                opacity:[0,1],
+                translateY:[-20,0],
+                duration:800,
+                delay:function(el,i){
+                    return i*50;
+                },
+                offset:100
+            })
+        }else{
+            if(this.anim2)this.anim2.pause();
+            this.anim2=anime.timeline();
+            this.anim2
+            .add({
+                targets:'#nav',
+                easing:'easeOutExpo',
+                scaleX:{value:0,duration:400},
+                scaleY:{value:0,duration:400},
+            })
+            .add({
+                targets:'#nav+.shadow',
+                scale:0,
+                opacity:0,
+                easing:'easeOutQuad',
+                offset:-400
+            })
+        }
+    }) //点击切换nav
+    
+    ////////////////////////////////////////////////
+    // 上传作品
+    $('#btn-add').click(function (ev){
+      ev.stopPropagation();
+      $('.upload').css('display','block');
+      $('.upload-form').css('transform','scale(0)');
+      if(window.anim)window.anim.pause();
+        window.anim=anime({
+        targets:'.upload',
+        easing:'linear',
+        duration:'200',
+        opacity:[.5,1],
+        complete:function (){
+          window.anim=anime({
+            targets:'.upload-form',
+            duration:'600',
+            easing:'linear',
+            opacity:[0,1],
+            translateY:[100,0]
+          })
+        }
+      })
+    })
+    $('.upload-form').click(function (ev){
+      ev.stopPropagation();
+    })
+    $(document).click(function (){
+      if(window.anim)window.anim.pause();
+        window.anim=anime({
+        targets:'.upload-form',
+        duration:'300',
+        easing:'linear',
+        opacity:0,
+        translateY:100,
+        complete:function(){
+          window.anim=anime({
+            targets:'.upload',
+            easing:'linear',
+            duration:'300',
+            opacity:0,
+            complete:function (){
+              $('.upload').css('display','none');
+            }
+          })
+        }
+      })
+    })
+    
+  </script>
+</body>
+</html>
