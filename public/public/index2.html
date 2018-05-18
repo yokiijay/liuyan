@@ -2,6 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Sphere E Project</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link href='http://cdn.webfont.youziku.com/webfonts/nomal/117757/47017/5aedd8d3f629d8079c5c7ce5.css' rel='stylesheet' type='text/css' />
@@ -242,7 +243,7 @@
             audio.onOff=!audio.onOff;
           }
         }
-        $(window).on('touchstart',function(e){
+        $(document.body).on('touchstart',function(e){
           if(!audio.onOff){
             letsRock();
             audio.onOff=!audio.onOff;
