@@ -286,6 +286,12 @@
         ev.preventDefault();
         audio.paused ? audio.play() : audio.pause();
       })
+      new Hammer(document.body).on('swipeleft',function (ev){
+        nextAudio();
+      })
+      new Hammer(document.body).on('swiperight',function (ev){
+        prevAudio();
+      })
       $(window).keydown(function (ev){
         if(audio.paused&&ev.keyCode==13){
           audio.play()
