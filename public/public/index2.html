@@ -244,7 +244,7 @@
             audio.onOff=!audio.onOff;
           }
         }
-        $(document.body).on('touchstart',function(e){
+        $(document.body).on('click',function(e){
           if(!audio.onOff){
             audio.play();
             letsRock();
