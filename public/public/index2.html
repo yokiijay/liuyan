@@ -239,12 +239,14 @@
       audio.oncanplay=function (){
         window.onkeydown=function(ev){
           if(ev.keyCode==13&&!audio.onOff){
+            audio.play();
             letsRock();
             audio.onOff=!audio.onOff;
           }
         }
         $(document.body).on('touchstart',function(e){
           if(!audio.onOff){
+            audio.play();
             letsRock();
             audio.onOff=!audio.onOff;
           }
@@ -290,7 +292,7 @@
         }
       }
       function letsRock(){
-        audio.play();
+//        audio.play();
         var ac=new (window.AudioContext||window.webkitAudioContext)();
         var source=ac.createMediaElementSource(audio);
         var analyser=ac.createAnalyser();
